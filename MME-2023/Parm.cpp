@@ -45,7 +45,6 @@ namespace Parm
 					throw ERROR_THROW(104);
 				findOut = 1;
 				wcscpy_s(inputParms.out, &(argv[i])[5]);
-				wcscat_s(inputParms.out, PARM_OUT_DEFAULT_EXT);
 			}
 			else
 			{

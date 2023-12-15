@@ -11,13 +11,6 @@ namespace IT
         this->size = 0;
         this->table = new Entry[size];
     }
-    void Add(IdTable& idtable, Entry& entry)
-    {
-        if (idtable.size + 1 > TI_MAXSIZE)
-            throw ERROR_THROW(122);
-        idtable.table[idtable.size] = entry;
-        idtable.size++;
-    }
     Entry GetEntry(IdTable& idtable, int n)
     {
         return idtable.table[n];
@@ -49,6 +42,11 @@ namespace IT
         delete[] idtable.table;
     }
 
+    void DeleteFuncs(FuncPrototype& funcs)
+    {
+        delete[] funcs.table;
+    }
+
     char* findPrefix(FuncPrototype& funcs)
     {
         return funcs.table[funcs.size - 1].id;
@@ -62,6 +60,36 @@ namespace IT
             {
                 if (strcmp(pref, itable.table[i].pref) == 0 )
                     return itable.table[i].idxfirstLE;
+            }
+        }
+        return -1;
+    }
+
+    int findFirstLiteral(int value,IdTable&itable)
+    {
+        for (int i = 0; i < itable.size; i++)
+        {
+            if (itable.table[i].idtype==L)
+            {
+                if (itable.table[i].idtype != IT::INT)
+                    continue;
+                if (itable.table[i].value.vint==value)
+                    return i;
+            }
+        }
+        return -1;
+    }
+
+    int findFirstLiteral(int len,char* value, IdTable& itable)
+    {
+        for (int i = 0; i < itable.size; i++)
+        {
+            if (itable.table[i].idtype == L)
+            {
+                if (itable.table[i].idtype != IT::STR)
+                    continue;
+                if (itable.table[i].value.vstr.len == len&&strcmp(value,itable.table[i].value.vstr.str) == 0)
+                    return i;
             }
         }
         return -1;

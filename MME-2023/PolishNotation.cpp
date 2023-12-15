@@ -23,7 +23,10 @@ namespace PN {
 					}
 				}
 				PolishNotation(i + 2, lextable, idtable);
-				lextable.table[j-1] = temp;
+				j = i + 2;
+				while (lextable.table[j].lexema != ';')
+					j++;
+				lextable.table[j] = temp;
 			}
 		}
 	}
@@ -43,7 +46,7 @@ namespace PN {
 		{
 			priority = getP(lextable.table[i]);
 
-			if (lextable.table[i].lexema == 'i' && lextable.table[i + 1].lexema == '(') // попали на вызов функции. 
+			if (lextable.table[i].lexema == 'i' && lextable.table[i + 1].lexema == '(') 
 			{
 				indID = lextable.table[i].idxTI;
 				i++;
@@ -59,7 +62,7 @@ namespace PN {
 					else if (priority == -2);
 					else if (priority == -1)
 					{
-						while (getP(stack.top()) != 1)			// выталкиваем стек пока не встретим открывашку.
+						while (getP(stack.top()) != 1)			
 						{
 							current.push(stack.top());
 							stack.pop();
@@ -78,7 +81,7 @@ namespace PN {
 
 			if (priority == 0) current.push(lextable.table[i]);
 			else if (priority == 1) stack.push(lextable.table[i]);
-			else if (priority == 2 || priority == 3 || priority == 4 || priority == 5)
+			else if (priority == 2 || priority == 3)
 			{
 				while (!stack.empty())
 				{
@@ -95,7 +98,7 @@ namespace PN {
 			{
 				if(!stack.empty())
 				{
-					while (getP(stack.top()) != 1)			// выталкиваем стек пока не встретим открывашку.
+					while (getP(stack.top()) != 1)			
 					{
 						current.push(stack.top());
 						stack.pop();
@@ -112,10 +115,10 @@ namespace PN {
 			stack.pop();
 		}
 		current.push(lextable.table[i]);
-		//обратная польская запись построена.
+		
 
 
-		int posLast = i; // позиция последнего символа выражения до польской записи
+		int posLast = i; 
 		i = n;
 
 		for (i; i <= posLast; i++) {
@@ -137,9 +140,9 @@ namespace PN {
 		char token = table.lexema;
 
 		if (token == 'v') token = table.operatorValue;
-
-		if (token == '+' || token == '-') return 3;
-		else if (token == '*' || token == '/' || token == '%') return 2;
+		
+		if (token == '*' || token == '/' || token == '%') return 3;
+		else if (token == '+' || token == '-') return 2;
 		else if (token == '(') return 1;
 		else if (token == ')') return -1;
 		else if (token == ',') return -2;

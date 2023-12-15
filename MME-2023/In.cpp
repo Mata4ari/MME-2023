@@ -19,6 +19,8 @@ namespace In
 		inp.text = new unsigned char[IN_MAX_LEN_TEXT];
 		while (ifile.get(c))
 		{
+			if (c == '\t')
+				c = ' ';
 			ch = c;
 			if (ch == IN_CODE_ENDL)
 			{

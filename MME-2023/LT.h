@@ -66,10 +66,8 @@ namespace LT
 		LexTable (int size);
 	};
 
-	void Add(LexTable& lextable, Entry entry);
 	Entry& GetEntry(LexTable& lextable, int n);
 	void Delete(LexTable& lextable);
 	bool isParm(LexTable& ltable, IT::IdTable& itable);
 	void PrintLexTable(LexTable& ltable);
-	void Initialize(LexTable& ltable, IT::IdTable& itable);
 }

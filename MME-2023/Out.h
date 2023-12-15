@@ -6,7 +6,7 @@ namespace Out
 	{
 		std::ofstream* stream;
 		OUTFILE() { this->stream = nullptr; }
-		OUTFILE(wchar_t outfile[]);
+		OUTFILE(const wchar_t outfile[]);
 
 	};
 

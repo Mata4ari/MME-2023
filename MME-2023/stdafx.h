@@ -12,6 +12,8 @@
 #include "GRB.h"
 #include "MFST.h"
 #include "PolishNotation.h"
+#include "SemAnalysis.h"
+#include "Translation.h"
 #include <iostream>
 #include <fstream>
 #include <Windows.h>
@@ -19,3 +21,4 @@
 #include <stack>
 #include <queue>
 #include <iomanip>
+using namespace std;

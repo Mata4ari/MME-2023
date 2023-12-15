@@ -1,7 +1,16 @@
 #include "stdafx.h"
 using namespace std;
 
-
+/*
+ инициализаци€ по умолчанию дл€ выражений
+ настроить все исключени€
+ вызов функции вне выражени€
+ дописать знаки припинани€ 
+ переписать коды ошибок
+ переписать протокол выхода 
+ переписать дл€ табул€ции
+ пропуск строк в лексическом ошибочных при исключении
+*/
 int _tmain(int argc,_TCHAR* argv[])
 {
 	setlocale(LC_ALL, "rus");
@@ -13,38 +22,44 @@ int _tmain(int argc,_TCHAR* argv[])
 		Parm::PARM inputParm = Parm::getparm(argc, argv);
 		
 		lg = Log::LOG(inputParm.log);
-		Log::WriteLine(lg, (char*)"“ест:", "без ошибок \n", "");
-		Log::WriteLine(lg, (wchar_t*)L"“ест:", L"без ошибок \n", L"");
 		Log::WriteLog(lg);
 		Log::WriteParm(lg, inputParm);
-		out = Out::OUTFILE(inputParm.out);
+		out = Out::OUTFILE(L"D:\\project\\MME-2023\\MME-2023\\programText.txt.out");
 		In::INP in = In::getin(inputParm.in);
 		Out::writeOutFile(out, in.text);
 
 		LT::LexTable ltable(LT_MAXSIZE);
 		IT::IdTable itable(TI_MAXSIZE);
-		Lex::Reading(inputParm.out,ltable,itable);
+		IT::FuncPrototype funcs;
+		Lex::Reading(L"D:\\project\\MME-2023\\MME-2023\\programText.txt.out",ltable,itable,funcs);
+		SA::checkParms(itable, ltable, funcs);
 
 		Log::WriteIn(lg, in);
 
+
 		IT::PrintIdTable(itable);
 		LT::PrintLexTable(ltable);
 
-		/*MFST_TRACE_START
+		MFST_TRACE_START
 			MFST::Mfst mfst(ltable, GRB::getGreibach());
-		mfst.start();*/
+		mfst.start();
 
-		//mfst.savededucation();
+		mfst.savededucation();
 
-		//mfst.printrules();
+		mfst.printrules();
+
+		SA::checkTypes(itable, ltable, funcs);
 		PN::getPolish(ltable, itable);
-		LT::Initialize(ltable, itable);
+		SA::Initialize(ltable, itable);
 
 		IT::PrintIdTable(itable);
 		LT::PrintLexTable(ltable);
+
+		TR::translation(inputParm.out, ltable, itable,funcs);
 
 		LT::Delete(ltable);
 		IT::Delete(itable);
+		IT::DeleteFuncs(funcs);
 
 
 		Log::Close(lg);

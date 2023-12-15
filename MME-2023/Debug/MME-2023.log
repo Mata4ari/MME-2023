@@ -1,11 +1,33 @@
-﻿Сборка начата 07.12.2023 15:49:45.
-Уровень детализации журнала: Normal.     1>Проект "D:\project\MME-2023\MME-2023\MME-2023.vcxproj" в узле 2 (целевые объекты Build).
-     1>InitializeBuildStatus:
+﻿Сборка начата 15.12.2023 23:23:59.
+Уровень детализации журнала: Normal.     1>Проект "D:\project\MME-2023\MME-2023\MME-2023.vcxproj" в узле 3 (целевые объекты Rebuild).
+     1>_PrepareForClean:
+         Файл "Debug\MME-2023.tlog\MME-2023.lastbuildstate" удаляется.
+       InitializeBuildStatus:
          Создание "Debug\MME-2023.tlog\unsuccessfulbuild", так как было задано "AlwaysCreate".
        ClCompile:
-         D:\Progi\Visla\VC\Tools\MSVC\14.35.32215\bin\HostX86\x86\CL.exe /c /ZI /JMC /nologo /W3 /WX- /diagnostics:column /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /permissive- /Fo"Debug\\" /Fd"Debug\vc143.pdb" /external:W3 /Gd /TP /analyze- /FC /errorReport:prompt LexAnalysis.cpp
+         D:\Progi\Visla\VC\Tools\MSVC\14.35.32215\bin\HostX86\x86\CL.exe /c /ZI /JMC /nologo /W3 /WX- /diagnostics:column /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /permissive- /Fo"Debug\\" /Fd"Debug\vc143.pdb" /external:W3 /Gd /TP /analyze- /FC /errorReport:prompt Error.cpp FST.cpp GRB.cpp In.cpp IT.cpp LexAnalysis.cpp Log.cpp LT.cpp main.cpp MFST.cpp Out.cpp Parm.cpp PolishNotation.cpp SemAnalysis.cpp Translation.cpp
+         Error.cpp
+         FST.cpp
+     1>D:\project\MME-2023\MME-2023\FST.cpp(78,37): warning C4267: инициализация: преобразование из "size_t" в "short"; возможна потеря данных
+         GRB.cpp
+         In.cpp
+         IT.cpp
          LexAnalysis.cpp
-     1>D:\project\MME-2023\MME-2023\LexAnalysis.cpp(559,13): warning C4002: слишком много аргументов для вызова макроса, подобного функции, "ERROR_THROW"
+         Log.cpp
+     1>D:\project\MME-2023\MME-2023\Log.cpp(25,22): warning C4018: <: несоответствие типов со знаком и без знака
+     1>D:\project\MME-2023\MME-2023\Log.cpp(45,22): warning C4018: <: несоответствие типов со знаком и без знака
+         LT.cpp
+         main.cpp
+         MFST.cpp
+     1>D:\project\MME-2023\MME-2023\MFST.cpp(237,68): warning C4267: =: преобразование из "size_t" в "short"; возможна потеря данных
+         Out.cpp
+         Parm.cpp
+     1>D:\project\MME-2023\MME-2023\Parm.cpp(9,11): warning C4101: temp: неиспользованная локальная переменная
+         PolishNotation.cpp
+         SemAnalysis.cpp
+     1>D:\project\MME-2023\MME-2023\SemAnalysis.cpp(16,13): warning C4002: слишком много аргументов для вызова макроса, подобного функции, "ERROR_THROW"
+         Translation.cpp
+         Создание кода...
        Link:
          D:\Progi\Visla\VC\Tools\MSVC\14.35.32215\bin\HostX86\x86\link.exe /ERRORREPORT:PROMPT /OUT:"D:\project\MME-2023\Debug\MME-2023.exe" /INCREMENTAL /ILK:"Debug\MME-2023.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\project\MME-2023\Debug\MME-2023.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\project\MME-2023\Debug\MME-2023.lib" /MACHINE:X86 Debug\Error.obj
          Debug\FST.obj
@@ -20,19 +42,26 @@
          Debug\Out.obj
          Debug\Parm.obj
          Debug\PolishNotation.obj
+         Debug\SemAnalysis.obj
+         Debug\Translation.obj
          MME-2023.vcxproj -> D:\project\MME-2023\Debug\MME-2023.exe
        FinalizeBuildStatus:
          Файл "Debug\MME-2023.tlog\unsuccessfulbuild" удаляется.
          Обращение к "Debug\MME-2023.tlog\MME-2023.lastbuildstate".
-     1>Сборка проекта "D:\project\MME-2023\MME-2023\MME-2023.vcxproj" завершена (целевые объекты Build).
+     1>Сборка проекта "D:\project\MME-2023\MME-2023\MME-2023.vcxproj" завершена (целевые объекты Rebuild).
 
 Сборка успешно завершена.
 
-       "D:\project\MME-2023\MME-2023\MME-2023.vcxproj" (целевой объект Build ) (1) ->
+       "D:\project\MME-2023\MME-2023\MME-2023.vcxproj" (целевой объект Rebuild ) (1) ->
        (Целевой объект ClCompile) -> 
-         D:\project\MME-2023\MME-2023\LexAnalysis.cpp(559,13): warning C4002: слишком много аргументов для вызова макроса, подобного функции, "ERROR_THROW"
+         D:\project\MME-2023\MME-2023\FST.cpp(78,37): warning C4267: инициализация: преобразование из "size_t" в "short"; возможна потеря данных
+         D:\project\MME-2023\MME-2023\Log.cpp(25,22): warning C4018: <: несоответствие типов со знаком и без знака
+         D:\project\MME-2023\MME-2023\Log.cpp(45,22): warning C4018: <: несоответствие типов со знаком и без знака
+         D:\project\MME-2023\MME-2023\MFST.cpp(237,68): warning C4267: =: преобразование из "size_t" в "short"; возможна потеря данных
+         D:\project\MME-2023\MME-2023\Parm.cpp(9,11): warning C4101: temp: неиспользованная локальная переменная
+         D:\project\MME-2023\MME-2023\SemAnalysis.cpp(16,13): warning C4002: слишком много аргументов для вызова макроса, подобного функции, "ERROR_THROW"
 
-    Предупреждений: 1
+    Предупреждений: 6
     Ошибок: 0
 
-Прошло времени 00:00:02.50
+Прошло времени 00:00:18.86

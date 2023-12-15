@@ -2,7 +2,7 @@
 
 namespace Out
 {
-	OUTFILE::OUTFILE(wchar_t outfile[])
+	OUTFILE::OUTFILE(const wchar_t outfile[])
 	{
 		auto ofile = new std::ofstream;
 		ofile->open(outfile);

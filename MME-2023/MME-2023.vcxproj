@@ -140,6 +140,8 @@
     <ClCompile Include="Out.cpp" />
     <ClCompile Include="Parm.cpp" />
     <ClCompile Include="PolishNotation.cpp" />
+    <ClCompile Include="SemAnalysis.cpp" />
+    <ClCompile Include="Translation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Error.h" />
@@ -156,7 +158,9 @@
     <ClInclude Include="Parm.h" />
     <ClInclude Include="PolishNotation.h" />
     <ClInclude Include="Rules.h" />
+    <ClInclude Include="SemAnalysis.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Translation.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

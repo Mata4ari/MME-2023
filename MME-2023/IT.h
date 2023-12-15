@@ -20,6 +20,7 @@ namespace IT
 		char pref[ID_MAXSIZE+1];
 		IDDATATYPE iddatatype;
 		IDTYPE idtype;
+		bool inlib = 0;
 
 		union
 		{
@@ -43,9 +44,11 @@ namespace IT
 			IDDATATYPE parms[4];
 			IDDATATYPE retType;
 		};
-		Func table[FUNC_MAXSIZE];
+		Func* table;
 		FuncPrototype()
 		{
+			table = new Func[FUNC_MAXSIZE];
+
 			strcpy_s(this->table[this->size].id, "rand");
 			this->table[this->size].numParms = 2;
 			this->table[this->size].retType = INT;
@@ -69,5 +72,8 @@ namespace IT
 	void PrintIdTable(IdTable& itable);
 	char* findPrefix(FuncPrototype& funcs);
 	int findFirstLT(char* id, char* pref, IdTable& itable);
+	int findFirstLiteral(int len, char* value, IdTable& itable);
+	int findFirstLiteral(int value, IdTable& itable);
 	int findFunc(char* id, int sn, IdTable& itable);
+	void DeleteFuncs(FuncPrototype& funcs);
 }

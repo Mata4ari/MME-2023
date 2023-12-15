@@ -4,9 +4,10 @@ using namespace std;
 
 
 bool hasMain = 0;
+int LiteralCount = 0;
 namespace Lex
 {
-	void Reading(wchar_t infile[], LT::LexTable&ltable,IT::IdTable&itable)
+	void Reading(const wchar_t infile[], LT::LexTable&ltable,IT::IdTable&itable,IT::FuncPrototype& funcs)
 	{
 		auto ifile = new std::ifstream;
 		ifile->open(infile);
@@ -14,7 +15,6 @@ namespace Lex
 			throw ERROR_THROW(114);
 
 
-		IT::FuncPrototype funcs;
 		char temp[TI_STR_MAXSIZE+3];
 		char c;
 		int count = 0;
@@ -47,7 +47,7 @@ namespace Lex
 				{
 					if (ltable.size + 1 > LT_MAXSIZE)
 						throw ERROR_THROW(120);
-					addLexem(c, sn, ltable);
+					addLexem(c, sn, ltable,itable);
 				}
 				if (c == '|')
 				{
@@ -64,10 +64,9 @@ namespace Lex
 		}
 		if (!hasMain)
 			throw ERROR_THROW(132);
-		checkParms(itable, ltable, funcs);
 	}
 
-	void addLexem(char c,int sn, LT::LexTable& ltable)
+	void addLexem(char c,int sn, LT::LexTable& ltable, IT::IdTable& itable)
 	{
 		if (c == ',')
 		{
@@ -87,6 +86,9 @@ namespace Lex
 		}
 		else if (c == '(')
 		{
+			if (ltable.table[ltable.size - 1].idxTI != TI_NULLIDX)
+				if (itable.table[ltable.table[ltable.size - 1].idxTI].idtype != IT::F&& itable.table[ltable.table[ltable.size - 1].idxTI].idtype != IT::DF)
+					throw ERROR_THROW_IN(138, sn, -1);
 			ltable.table[ltable.size].idxTI = LT_TI_NULLIDX;
 			ltable.table[ltable.size].lexema = LEX_LEFTHESIS;
 			ltable.table[ltable.size].sn = sn;
@@ -339,32 +341,24 @@ namespace Lex
 	int setStrLiteral(IT::IdTable& itable,char *temp,int sn,LT::LexTable&ltable,IT::FuncPrototype&funcs)
 	{
 		IT::Entry entry;
-		int i = 0;
-		for (int j = 0; i < ID_MAXSIZE && temp[j] != '\0'; i++, j++)
-		{
-			entry.id[i] = temp[j];
-		}
-		entry.id[i] = '\0';
 
 		entry.idtype = IT::L;
 		entry.iddatatype = IT::STR;
 		entry.value.vstr.len = strlen(temp)-1;
-		temp[strlen(temp) - 1] = '\0';
-		strcpy_s(entry.value.vstr.str, &(temp)[1]);
+		strcpy_s(entry.value.vstr.str, temp);
 		strcpy_s(entry.pref, IT::findPrefix(funcs));
-		int idLE = IT::findFirstLT(entry.id, entry.pref, itable);
-		if (idLE != -1)
+		int id = IT::findFirstLiteral(entry.value.vstr.len,entry.value.vstr.str,itable);
+		if (id != -1)
 		{
-			if (entry.value.vstr.len==itable.table[ltable.table[idLE].idxTI].value.vstr.len)
-			{
-				if (strcmp(entry.value.vstr.str, itable.table[ltable.table[idLE].idxTI].value.vstr.str) == 0)
-				{
-					return ltable.table[idLE].idxTI;
-				}
-			}
+			return id;
 		}
-		entry.idxfirstLE = ltable.size;
-		itable.table[itable.size] = entry;
+		else
+		{
+			_itoa_s(LiteralCount, entry.id, 10);
+			LiteralCount++;
+			entry.idxfirstLE = ltable.size;
+			itable.table[itable.size] = entry;
+		}
 		itable.size++;
 		return itable.size - 1;
 	}
@@ -384,26 +378,20 @@ namespace Lex
 		}
 		if (x > 4294967295)
 			throw ERROR_THROW_IN(130, sn, -1);
-		
-		int i = 0;
-		for (int j = 0; i < ID_MAXSIZE && temp[j] != '\0'; i++, j++)
-		{
-			entry.id[i] = temp[j];
-		}
-		entry.id[i] = '\0';
 
 		entry.idtype = IT::L;
 		entry.iddatatype = IT::INT;
 		entry.value.vint = x;
 		strcpy_s(entry.pref, IT::findPrefix(funcs));
-		int idLE = IT::findFirstLT(entry.id, entry.pref, itable);
-		if (idLE != -1)
+		int id = IT::findFirstLiteral(x,itable);
+		if (id != -1)
 		{
-			if(entry.value)
-			return ltable.table[idLE].idxTI;
+			return id;
 		}
 		else
 		{
+			_itoa_s(LiteralCount, entry.id, 10);
+			LiteralCount++;
 			entry.idxfirstLE = ltable.size;
 			itable.table[itable.size] = entry;
 		}
@@ -488,11 +476,12 @@ namespace Lex
 				{
 					entry.iddatatype = prototype->retType;
 					entry.idxfirstLE = ltable.size;
+					entry.inlib = 1;
 				}
 				else
 				{
-					entry.iddatatype = itable.table[prototype->idTI].iddatatype;
-					entry.idxfirstLE = itable.table[prototype->idTI].idxfirstLE;
+					entry.iddatatype = prototype->retType;
+					entry.idxfirstLE = ltable.size;
 				}
 			}
 			else
@@ -516,7 +505,7 @@ namespace Lex
 		else
 		{
 			if (LT::GetEntry(ltable, ltable.size - 1).lexema == LEX_INTEGER)
-				throw ERROR_THROW_IN(125, sn, -1);
+				throw ERROR_THROW_IN(136, sn, -1);
 			return ltable.table[firstLT].idxTI;
 		}
 		itable.table[itable.size] = entry;
@@ -546,53 +535,6 @@ namespace Lex
 		hasMain=1;
 		itable.size++;
 		return itable.size - 1;
-	}
-
-	void checkParms(IT::IdTable& itable, LT::LexTable& ltable, IT::FuncPrototype& funcs)
-	{
-		int numParms = 0;
-		for (int i = 0; i < ltable.size; i++)
-		{
-			if(ltable.table[i].idxTI!= LT_TI_NULLIDX)
-				if (itable.table[ltable.table[i].idxTI].idtype == IT::F)
-				{
-					numParms = 0;
-					IT::FuncPrototype::Func* func = findProt(itable.table[ltable.table[i].idxTI].id, funcs);
-					if (func == nullptr)
-						throw ERROR_THROW(126, ltable.table[i].sn);
-					
-					if (func->numParms == 0)
-						continue;
-					if (func->numParms == 1)
-					{
-						if(ltable.table[i + 2].idxTI== LT_TI_NULLIDX)
-							throw ERROR_THROW_IN(134, ltable.table[i + 2].sn, -1);
-						if (itable.table[ltable.table[i + 2].idxTI].iddatatype != func->parms[0])
-							throw ERROR_THROW_IN(134, ltable.table[i + 2].sn, -1);
-					}
-					if (func->numParms > 1)
-					{
-						if (ltable.table[i + 2].idxTI == LT_TI_NULLIDX)
-							throw ERROR_THROW_IN(134, ltable.table[i + 2].sn, -1);
-						if (itable.table[ltable.table[i + 2].idxTI].iddatatype != func->parms[0])
-							throw ERROR_THROW_IN(134, ltable.table[i + 2].sn, -1);
-						numParms++;
-						for (int j = i; ltable.table[j].lexema != ')';j++)
-						{
-							if (ltable.table[j].lexema == ',')
-							{
-								if (ltable.table[j + 1].idxTI == LT_TI_NULLIDX)
-									throw ERROR_THROW_IN(134, ltable.table[j + 1].sn, -1);
-								if (itable.table[ltable.table[j + 1].idxTI].iddatatype != func->parms[numParms])
-									throw ERROR_THROW_IN(134, ltable.table[j + 1].sn, -1);
-								numParms++;
-							}
-						}
-						if(numParms!=func->numParms)
-							throw ERROR_THROW_IN(134, ltable.table[i].sn, -1);
-					}
-				}
-		}
 	}
 
 	IT::FuncPrototype::Func* findProt(char* id, IT::FuncPrototype& funcs)
